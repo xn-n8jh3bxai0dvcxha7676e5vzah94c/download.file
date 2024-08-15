@@ -14,7 +14,14 @@
 
         // 完全なURLを作成
         const fileUrl = 'https://' + hashDomain + relativeFilePath; // ここでhashDomainは上記のコードから取得したもの
+function getFileNameFromUrl(url) {
+    const urlObject = new URL(url); // URLオブジェクトを作成
+    const pathArray = urlObject.pathname.split('/'); // パスをスラッシュで分割
+    const fileName = pathArray.pop(); // 最後の要素を取得
 
+    return fileName; // ファイル名を返す
+}
+        const downloadedFilename = getFileNameFromUrl(fileUrl);
         // ダウンロード
         function autoDownloadFile(url) {
     fetch(url)
@@ -28,7 +35,7 @@
             const url = window.URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
-            a.download = 'downloadedFile'; // ダウンロード時のファイル名
+            a.download = downloadedFilename; // ダウンロード時のファイル名
             document.body.appendChild(a);
             a.click();
             a.remove();
