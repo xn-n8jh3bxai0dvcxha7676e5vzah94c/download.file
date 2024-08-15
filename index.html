@@ -6,43 +6,7 @@
     <title>ファイルダウンロード</title>
 </head>
 <body>
-    <a id="download-link" href="#" download>ファイルをダウンロード</a>
-
-    <script>
-        // ハッシュからドメインを取得
-        const hashDomain = window.location.hash ? window.location.hash.substring(1) : 'file.i-i.f5.si';
-        const currentUrl = new URL(window.location.href);
-        const relativeFilePath = currentUrl.pathname; // 現在のURLのパスを取得
-
-        // 完全なURLを作成
-        const fileUrl = 'https://' + hashDomain + relativeFilePath; // ここでhashDomainは上記のコードから取得したもの
-
-        // ダウンロード
-        function autoDownloadFile(url) {
-    fetch(url)
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-            return response.blob();
-        })
-        .then(blob => {
-            const url = window.URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = 'downloadedFile'; // ダウンロード時のファイル名
-            document.body.appendChild(a);
-            a.click();
-            a.remove();
-            window.URL.revokeObjectURL(url);
-        })
-        .catch(error => {
-            console.error('There was a problem with the fetch operation:', error);
-        });
-}
-
-// 使用例
-autoDownloadFile(fileUrl);
- </script>
+<p>エラ−index</p>
+    <p>index.htmlがリクエストされました。その為リクエストを正常に行えませんでした。</p>
 </body>
 </html>
