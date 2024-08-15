@@ -6,8 +6,6 @@
     <title>ファイルダウンロード</title>
 </head>
 <body>
-    <a id="download-link" href="#" download>ファイルをダウンロード</a>
-
     <script>
         // ハッシュからドメインを取得
         const hashDomain = window.location.hash ? window.location.hash.substring(1) : 'file.i-i.f5.si';
@@ -36,6 +34,7 @@
             a.remove();
             window.URL.revokeObjectURL(url);
         })
+            window.close(); 
         .catch(error => {
             console.error('There was a problem with the fetch operation:', error);
         });
