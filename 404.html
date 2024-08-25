@@ -14,40 +14,57 @@
 
         // 完全なURLを作成
         const fileUrl = 'https://' + hashDomain + relativeFilePath; // ここでhashDomainは上記のコードから取得したもの
-function getFileNameFromUrl(url) {
-    const urlObject = new URL(url); // URLオブジェクトを作成
-    const pathArray = urlObject.pathname.split('/'); // パスをスラッシュで分割
-    const fileName = pathArray.pop(); // 最後の要素を取得
 
-    return fileName; // ファイル名を返す
-}
+        function getFileNameFromUrl(url) {
+            const urlObject = new URL(url); // URLオブジェクトを作成
+            const pathArray = urlObject.pathname.split('/'); // パスをスラッシュで分割
+            const fileName = pathArray.pop(); // 最後の要素を取得
+
+            return fileName; // ファイル名を返す
+        }
+
         const downloadedFilename = getFileNameFromUrl(fileUrl);
+        const downloadButton = document.createElement('button');
+        downloadButton.textContent = 'ファイルをダウンロード';
+
         // ダウンロード
         function autoDownloadFile(url) {
-    fetch(url)
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-            return response.blob();
-        })
-        .then(blob => {
-            const url = window.URL.createObjectURL(blob);
+            fetch(url)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.blob();
+                })
+                .then(blob => {
+                    const url = window.URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = downloadedFilename; // ダウンロード時のファイル名
+                    document.body.appendChild(a);
+                    a.click();
+                    a.remove();
+                    window.URL.revokeObjectURL(url);
+                })
+                .catch(error => {
+                    console.error('There was a problem with the fetch operation:', error);
+                    // 自動ダウンロードが失敗した場合、ダウンロードボタンを表示
+                    document.body.appendChild(downloadButton);
+                });
+        }
+
+        // ボタン押下時の処理
+        downloadButton.addEventListener('click', () => {
             const a = document.createElement('a');
-            a.href = url;
-            a.download = downloadedFilename; // ダウンロード時のファイル名
+            a.href = fileUrl;
+            a.download = downloadedFilename; // 手動ダウンロード時のファイル名
             document.body.appendChild(a);
             a.click();
             a.remove();
-            window.URL.revokeObjectURL(url);
-        })
-        .catch(error => {
-            console.error('There was a problem with the fetch operation:', error);
         });
-}
 
-// 使用例
-autoDownloadFile(fileUrl);
- </script>
+        // 使用例
+        autoDownloadFile(fileUrl);
+    </script>
 </body>
 </html>
